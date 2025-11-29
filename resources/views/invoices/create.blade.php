@@ -93,7 +93,7 @@
                                         </div>
                                         <div class="col-12 col-md-2">
                                             <label class="form-label">تعداد <span class="text-danger">*</span></label>
-                                            <input type="number" class="form-control quantity-input" name="items[0][quantity]" min="1" value="1" required>
+                                            <input type="number" step="0.001" class="form-control quantity-input" name="items[0][quantity]" min="0.001" value="1" required>
                                         </div>
                                         <div class="col-12 col-md-2">
                                             <label class="form-label">قیمت واحد <span class="text-danger">*</span></label>
@@ -194,6 +194,8 @@ document.getElementById('addItem').addEventListener('click', function() {
             input.value = '';
         } else if (input.classList.contains('quantity-input')) {
             input.value = 1;
+            input.step = '0.001';
+            input.min = '0.001';
         } else if (input.classList.contains('unit-price-input')) {
             input.value = '';
         } else if (input.classList.contains('discount-input')) {
