@@ -244,38 +244,34 @@ function attachItemEvents(itemRow) {
 }
 
 function calculateItemTotal(itemRow) {
-    const quantity = parseFloat(itemRow.querySelector('.quantity-input').value) || 0;
-    const unitPrice = parseFloat(itemRow.querySelector('.unit-price-input').value) || 0;
-    const discount = parseFloat(itemRow.querySelector('.discount-input').value) || 0;
-    
-    const subtotal = (unitPrice * quantity) - discount;
-    const tax = subtotal * 0;
-    const total = subtotal + tax;
-    
+    const quantity = parseFloat(itemRow.querySelector('.quantity-input').value.replace(/,/g, '')) || 0;
+    const unitPrice = parseFloat(itemRow.querySelector('.unit-price-input').value.replace(/,/g, '')) || 0;
+    const discount = parseFloat(itemRow.querySelector('.discount-input').value.replace(/,/g, '')) || 0;
+
+    const subtotal = (quantity * unitPrice) - discount;
+    const total = subtotal;
+
     itemRow.querySelector('.item-total').value = new Intl.NumberFormat('fa-IR').format(total) + ' تومان';
     calculateTotals();
 }
 
 function calculateTotals() {
     let subtotal = 0;
-    
+
     document.querySelectorAll('.item-row').forEach(itemRow => {
-        const quantity = parseFloat(itemRow.querySelector('.quantity-input').value) || 0;
-        const unitPrice = parseFloat(itemRow.querySelector('.unit-price-input').value) || 0;
-        const discount = parseFloat(itemRow.querySelector('.discount-input').value) || 0;
-        
-        subtotal += (unitPrice * quantity) - discount;
+        const quantity = parseFloat(itemRow.querySelector('.quantity-input').value.replace(/,/g, '')) || 0;
+        const unitPrice = parseFloat(itemRow.querySelector('.unit-price-input').value.replace(/,/g, '')) || 0;
+        const discount = parseFloat(itemRow.querySelector('.discount-input').value.replace(/,/g, '')) || 0;
+
+        subtotal += (quantity * unitPrice) - discount;
     });
-    
-    const totalDiscount = parseFloat(document.getElementById('totalDiscount').value) || 0;
-    const finalSubtotal = subtotal - totalDiscount;
-    const tax = finalSubtotal * 0;
-    const total = finalSubtotal + tax;
-    
+
+    const totalDiscount = parseFloat(document.getElementById('totalDiscount').value.replace(/,/g, '')) || 0;
+    const finalTotal = subtotal - totalDiscount;
+
     document.getElementById('subtotal').textContent = new Intl.NumberFormat('fa-IR').format(subtotal) + ' تومان';
     document.getElementById('discountAmount').textContent = new Intl.NumberFormat('fa-IR').format(totalDiscount) + ' تومان';
-    // document.getElementById('taxAmount').textContent = new Intl.NumberFormat('fa-IR').format(tax) + ' تومان';
-    document.getElementById('totalAmount').textContent = new Intl.NumberFormat('fa-IR').format(total) + ' تومان';
+    document.getElementById('totalAmount').textContent = new Intl.NumberFormat('fa-IR').format(finalTotal) + ' تومان';
 }
 
 document.getElementById('totalDiscount').addEventListener('input', calculateTotals);
